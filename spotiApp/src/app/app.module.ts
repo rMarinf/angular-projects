@@ -9,6 +9,10 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { app_routing} from './app.routes';
 import { SpotifyService } from './services/spotify.service';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { SinFotoPipe } from './pipes/sin-foto.pipe';
+import { ArtistComponent } from './components/artist/artist.component';
+import {DomseguroPipe} from './pipes/domseguro.pipe';
 
 
 @NgModule({
@@ -16,12 +20,16 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     HomeComponent,
     SearchComponent,
-    NavbarComponent
+    NavbarComponent,
+    SinFotoPipe,
+    DomseguroPipe,
+    ArtistComponent,
   ],
   imports: [
     BrowserModule,
     app_routing,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     SpotifyService

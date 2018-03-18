@@ -5,22 +5,51 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class SpotifyService {
 
-  public artistas: any[];
+  public artistas: any[] = [];
+  public artista: any;
+  public topTracks: any[] = [];
 
-  constructor(public http: HttpClient) {
-    console.log('Servicio spotify listo');
+  private urlSpotify = 'https://api.spotify.com/v1/';
+  private token = 'BQC-4jtz2W7qJTIJVk1UJKzf229-iJKBPATF3ib_zB998plRE-WfpGwtbbZY7j2I9TGdfO_9zmX2yBoVr-M';
+
+  constructor(public http: HttpClient) {}
+
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`,
+    });
   }
 
-  getArtistas() {
-    const url = 'https://api.spotify.com/v1/search?q=tania%20bowra&type=artist';
-    const headers = new HttpHeaders({
-      'Authorization': 'Bearer BQBlSVQEoSf5N7HZy-b5dk4JRwsxUGIWTCHtf0Dz_lC1Fa8_YRLniCcXXGPgKdsBd7IBQZJJ1uTELhmDqGA'
-    });
+  getArtistas(termino: string) {
+    const url = `${this.urlSpotify}search?q=${termino}&type=artist`;
+    const headers = this.getHeaders();
 
     return this.http.get(url, { headers })
       .map((response: any ) => {
         this.artistas = response.artists.items;
         return this.artistas;
+      });
+  }
+
+  getArtista(id: string) {
+    const url = `${this.urlSpotify}artists/${id}`;
+    const headers = this.getHeaders();
+
+    return this.http.get(url, { headers })
+      .map((response: any ) => {
+        this.artista = response;
+        return this.artista;
+      });
+  }
+
+  getTopTracksArtista(id: string) {
+    const url = `${this.urlSpotify}artists/${id}/top-tracks?country=ES`;
+    const headers = this.getHeaders();
+
+    return this.http.get(url, { headers })
+      .map((response: any ) => {
+        this.topTracks = response.tracks;
+        return this.topTracks;
       });
   }
 }
